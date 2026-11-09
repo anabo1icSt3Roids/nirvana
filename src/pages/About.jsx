@@ -117,7 +117,7 @@ export default function About() {
             </div>
             <div className="factsheet-item">
               <dt>Registered Location</dt>
-              <dd>Kahilipara, Guwahati, Assam - 781019</dd>
+              <dd>Hockey Stadium Rd, opp. LP School, Lalmati, Guwahati, Assam 781040</dd>
             </div>
             <div className="factsheet-item">
               <dt>GST Registration No.</dt>
