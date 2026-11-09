@@ -1,54 +1,57 @@
-# Nirvana Impex — B2B Supply Website
+# Nirvana Impex
 
-> Official website for **Nirvana Impex**, a Guwahati-based proprietorship supplying paper cups, tissue, packaging, and hygiene products to businesses across Assam and Northeast India.
+B2B supplier website for Nirvana Impex — a Guwahati-based business supplying paper cups, tissue products, packaging materials, stationery, and hygiene products to businesses across Assam and Northeast India.
+
+Built with React + Vite and deployed on Vercel with a serverless API backend.
+
+---
+
+## Features
+
+- Filterable product catalogue with category and keyword search
+- Product enquiry form with enquiry type, quantity, and WhatsApp follow-up link
+- General contact form
+- Serverless REST API (`/api/enquiries`, `/api/products`)
+- Password-protected admin dashboard for viewing submitted enquiries
+- WhatsApp click-to-chat integration on the enquiry page
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Frontend | React 18 + Vite 5 |
-| Routing | React Router v6 |
-| Backend / API | Vercel Serverless Functions (`/api`) |
-| Styling | Plain CSS (custom design system, no UI framework) |
-| Deployment | Vercel |
+- **React 18** with React Router v6
+- **Vite 5** — build tool and local dev server
+- **Vercel Serverless Functions** — `api/` folder auto-deployed as Node.js handlers
+- **Plain CSS** — custom design system, no UI framework
 
 ---
 
 ## Project Structure
 
 ```
-nirvana-impex/
-├── api/                        # Serverless backend (auto-deployed by Vercel)
-│   ├── enquiries.js            # POST /api/enquiries — receive & store leads
-│   └── products.js             # GET  /api/products  — product catalogue API
+├── api/
+│   ├── enquiries.js        # POST to submit, GET to list leads (admin use)
+│   └── products.js         # GET with optional ?category and ?search filters
 ├── public/
-│   ├── images/
-│   │   ├── products/           # 13 product images
-│   │   └── about/              # About page images (facility, founder portrait)
-│   ├── logo.jpg                # Official company logo
-│   └── favicon.jpg             # Browser favicon
+│   └── images/             # Product images, about page images, logo, favicon
 ├── src/
 │   ├── components/
-│   │   ├── Header.jsx          # Sticky nav with logo
-│   │   └── Footer.jsx          # Contact info, links, Admin portal
+│   │   ├── Header.jsx
+│   │   └── Footer.jsx
 │   ├── data/
-│   │   └── products.js         # 13 real products with categories and details
+│   │   └── products.js     # Product catalogue (source of truth)
 │   ├── pages/
-│   │   ├── Home.jsx            # Landing page — hero, features, CTA
-│   │   ├── Products.jsx        # Filterable product catalogue
-│   │   ├── About.jsx           # Company story, founder, factsheet
-│   │   ├── Contact.jsx         # Contact form → /api/enquiries
-│   │   ├── Enquiry.jsx         # Product enquiry form → /api/enquiries
-│   │   ├── Quote.jsx           # Quote request form
-│   │   └── Admin.jsx           # Password-protected admin dashboard
-│   ├── App.jsx                 # Route definitions
-│   ├── main.jsx                # React entry point
-│   └── styles.css              # Global design system
-├── vite-api-plugin.js          # Local dev middleware — serves /api/* without a second server
-├── vite.config.js
-├── vercel.json                 # API + SPA routing rules
+│   │   ├── Home.jsx
+│   │   ├── Products.jsx
+│   │   ├── About.jsx
+│   │   ├── Contact.jsx
+│   │   ├── Enquiry.jsx
+│   │   ├── Quote.jsx
+│   │   └── Admin.jsx       # Lead management dashboard
+│   ├── App.jsx
+│   └── styles.css
+├── vite-api-plugin.js      # Dev middleware — serves /api/* locally without a second server
+├── vercel.json
 └── index.html
 ```
 
@@ -56,147 +59,77 @@ nirvana-impex/
 
 ## Getting Started
 
-### Prerequisites
-
-- Node.js ≥ 18
-- npm ≥ 9
-
-### Install
+**Requirements:** Node.js ≥ 18, npm ≥ 9
 
 ```bash
 npm install
+npm run dev        # http://localhost:5173
+npm run build      # production build → dist/
+npm run preview    # preview the production build
 ```
 
-### Development
-
-```bash
-npm run dev
-```
-
-Runs at `http://localhost:5173`. The local API middleware (`vite-api-plugin.js`) serves `/api/enquiries` and `/api/products` during development — **no second server needed**.
-
-### Production Build
-
-```bash
-npm run build        # outputs to dist/
-npm run preview      # preview the production build locally
-```
+The local API middleware (`vite-api-plugin.js`) handles `/api/*` requests during development. No separate backend server is needed.
 
 ---
 
 ## Environment Variables
 
-Create a `.env` file in the project root (copy `.env.example` if present):
+Create a `.env` file at the project root:
 
 ```env
-VITE_WHATSAPP_NUMBER=917903221659
+# Public — embedded in the client bundle at build time
+VITE_WHATSAPP_NUMBER=917903221659      # digits only, no + or spaces
 VITE_CONTACT_EMAIL=nirvanaimpex11@gmail.com
 
-# Optional — set a real Formspree form ID to forward contact emails to inbox
+# Optional — Formspree form ID for email forwarding on contact/enquiry submissions
+# Sign up at formspree.io, create a form, and paste the ID here.
+# This is a public submission key, not a secret.
 VITE_FORMSPREE_ID=
 ```
 
-> **Never commit `.env` to version control.** It is listed in `.gitignore`.
-
-For Vercel deployment, add these as **Environment Variables** in the Vercel project settings.
+> `.env` is in `.gitignore` and must not be committed. Add the same variables in Vercel project settings for production.
 
 ---
 
-## Deployment (Vercel)
+## API Overview
 
-1. Push this repository to GitHub.
-2. Go to [vercel.com](https://vercel.com) → **Add New Project** → Import from GitHub.
-3. Set the **Root Directory** to `nirvana-impex/nirvana-impex` (if deploying from the monorepo root).
-4. Framework preset: **Vite**.
-5. Build command: `npm run build` | Output directory: `dist`.
-6. Add environment variables from the section above.
-7. Deploy — Vercel automatically deploys the `api/` folder as serverless functions.
-
-`vercel.json` handles routing:
-- `/api/(.*)` → serverless functions
-- `(.*)` → `index.html` (SPA catch-all)
-
----
-
-## Admin Dashboard
-
-A lightweight internal lead-management dashboard is available at `/admin`.
-
-- **Login passcode:** stored in `src/pages/Admin.jsx` as `DEFAULT_ADMIN_PASSCODE` — change before going to production.
-- Session is maintained via `sessionStorage` (cleared on tab close).
-- Displays all enquiries received via `/api/enquiries` with filter tabs (All / New / In Progress).
-
----
-
-## API Reference
-
-### `POST /api/enquiries`
-
-Submit a new lead or enquiry.
-
-**Request body (JSON):**
-```json
-{
-  "name": "Rajan Das",
-  "business": "Hotel Brahmaputra",
-  "email": "rajan@hotelb.com",
-  "phone": "+91 98765 43210",
-  "enquiryType": "Bulk Order",
-  "message": "Need 500 cartons of paper cups monthly."
-}
-```
-
-**Response:** `201 Created` with the saved enquiry object.
-
----
+Both endpoints are Vercel Serverless Functions under `api/`.
 
 ### `GET /api/products`
 
 Returns the product catalogue.
 
-**Query parameters:**
-
-| Param | Description |
+| Query param | Description |
 |---|---|
-| `category` | Filter by category slug (e.g. `paper-cups`) |
-| `search` | Full-text search on name and description |
+| `category` | Filter by category slug |
+| `search` | Keyword search on product name and description |
 
-**Response:** `200 OK` with an array of product objects.
+### `POST /api/enquiries`
+
+Accepts a new enquiry from the contact or product enquiry forms.
+
+Required fields: `name`, `email`, `message`  
+Optional fields: `business`, `phone`, `enquiryType`, `product`, `quantity`
+
+Returns `201` with the saved enquiry object. Enquiries are stored in memory and written to `data/enquiries.json` when the filesystem is writable (local dev). In Vercel's serverless environment, storage is in-memory per function instance.
+
+### `GET /api/enquiries`
+
+Returns all submitted enquiries. Used by the admin dashboard at `/admin`.
 
 ---
 
-## Product Catalogue
+## Deployment
 
-13 real products across 5 categories:
+The project is configured for Vercel. `vercel.json` routes `/api/*` to serverless functions and all other paths to `index.html` for client-side routing.
 
-| Category | Products |
+**Vercel project settings:**
+
+| Setting | Value |
 |---|---|
-| Paper Cups | Disposable paper cups (various sizes) |
-| Tissue & Napkins | Facial tissue, table napkins, pocket tissue |
-| Packaging | Carry bags, corrugated boxes |
-| Hygiene | Hand sanitizers, soap dispensers |
-| Stationery | Notebooks, writing pads |
+| Root Directory | `nirvana-impex/nirvana-impex` |
+| Framework Preset | Vite |
+| Build Command | `npm run build` |
+| Output Directory | `dist` |
 
-Product data is maintained in [`src/data/products.js`](src/data/products.js).
-
----
-
-## Business Details
-
-| Field | Detail |
-|---|---|
-| Company | Nirvana Impex |
-| Type | Proprietorship |
-| Proprietor | Mr. Gautam Pradhan |
-| GST | 18AKCPP8029J3ZQ |
-| Bank | Bank of Baroda |
-| Founded | 2020 |
-| Email | nirvanaimpex11@gmail.com |
-| WhatsApp | +91 79032 21659 |
-| Location | Guwahati, Assam, India |
-
----
-
-## License
-
-This project is proprietary. All rights reserved — Nirvana Impex © 2024.
+Add the environment variables from the section above in **Project Settings → Environment Variables** before deploying.
