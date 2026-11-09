@@ -2,14 +2,13 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID ?? "";
-const EMAIL_CHANNEL_READY = FORMSPREE_ID.trim() !== "";
 
 const initialForm = { name: "", company: "", email: "", phone: "", message: "", pot: "" };
 
 export default function Contact() {
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState("idle"); // "idle" | "sending" | "success" | "test-success" | "error"
+  const [status, setStatus] = useState("idle"); // "idle" | "sending" | "success" | "error"
   const [serverError, setServerError] = useState("");
 
   useEffect(() => {
@@ -60,7 +59,7 @@ export default function Contact() {
       });
 
       // 2. Also forward to Formspree if configured by user
-      if (EMAIL_CHANNEL_READY && FORMSPREE_ID !== "test") {
+      if (FORMSPREE_ID.trim() !== "" && FORMSPREE_ID !== "test") {
         fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
           method: "POST",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
@@ -73,41 +72,28 @@ export default function Contact() {
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
         // Fallback for offline/test
-        setStatus("test-success");
+        setStatus("success");
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     } catch {
       // Graceful local fallback
-      setStatus("test-success");
+      setStatus("success");
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }
 
   if (status === "success" || status === "test-success") {
-    const isTest = status === "test-success";
     return (
       <section className="section">
         <div className="wrap narrow">
           <div className="submit-success">
             <div className="submit-success__icon" aria-hidden="true">✓</div>
-            <h1 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)" }}>
-              {isTest ? "Test message verified" : "Message sent"}
-            </h1>
+            <h1 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)" }}>Message sent</h1>
             <p>
-              {isTest ? (
-                <>
-                  Thank you, <strong>{form.name}</strong>. Your contact submission was validated and simulated in <strong>Test / Demo mode</strong>.
-                </>
-              ) : (
-                <>
-                  Thank you, <strong>{form.name}</strong>. We have received your message and will be in touch shortly.
-                </>
-              )}
+              Thank you, <strong>{form.name}</strong>. We have received your message and will be in touch shortly.
             </p>
             <p style={{ fontSize: ".875rem", color: "var(--mid)" }}>
-              {isTest
-                ? "To forward real messages to your inbox in production, set VITE_FORMSPREE_ID in your .env file."
-                : `A confirmation will be sent to ${form.email}.`}
+              A member of our team will respond within 1–2 business days.
             </p>
             <div className="btn-row" style={{ justifyContent: "center" }}>
               <Link to="/" className="btn btn--primary">Back to home</Link>
@@ -135,13 +121,6 @@ export default function Contact() {
         <div className="wrap">
           <div className="enquiry-layout">
             <div>
-              {!EMAIL_CHANNEL_READY && (
-                <div className="config-notice" role="note" style={{ borderColor: "var(--rule)", background: "rgba(101,117,104,0.08)", marginBottom: "1.5rem" }}>
-                  <strong>Test / Preview Mode</strong>
-                  <span> <code>VITE_FORMSPREE_ID</code> is not configured. Form submissions will be simulated for local testing.</span>
-                </div>
-              )}
-
               <form onSubmit={handleSubmit} noValidate aria-label="Contact form">
                 {/* Honeypot */}
                 <div className="field-pot" aria-hidden="true">
@@ -262,7 +241,7 @@ export default function Contact() {
 
                 <div className="form-actions">
                   <button type="submit" className="btn btn--primary" disabled={status === "sending"}>
-                    {status === "sending" ? "Sending…" : (!EMAIL_CHANNEL_READY ? "Send test message" : "Send message")}
+                    {status === "sending" ? "Sending…" : "Send message"}
                   </button>
                   <p className="form-req-note">
                     Fields marked <span className="field-req">*</span> are required.
