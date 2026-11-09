@@ -1,0 +1,54 @@
+[
+  {
+    "id": "enq_1794257341022",
+    "name": "Manas Basu",
+    "business": "",
+    "email": "manasbasu2004@gmail.com",
+    "phone": "",
+    "enquiryType": "custom-print",
+    "product": "General Enquiry",
+    "quantity": "",
+    "message": "dsd",
+    "createdAt": "2026-11-09T20:49:01.022Z",
+    "status": "New"
+  },
+  {
+    "id": "enq_1794257162724",
+    "name": "Manas Basu",
+    "business": "sdsd",
+    "email": "manasbasu2004@gmail.com",
+    "phone": "",
+    "enquiryType": "product",
+    "product": "General Enquiry",
+    "quantity": "",
+    "message": "sdsd",
+    "createdAt": "2026-11-09T20:46:02.724Z",
+    "status": "New"
+  },
+  {
+    "id": "enq_sample_1",
+    "name": "Dr. Rajesh Sharma",
+    "business": "Guwahati City Hospital",
+    "email": "procurement@cityhospital.in",
+    "phone": "+91 98765 43210",
+    "enquiryType": "quote",
+    "product": "blue-biohazard-bag",
+    "quantity": "500 rolls",
+    "message": "Requirement for 500 rolls of blue biohazard non-chlorinated bags for biomedical waste segregation.",
+    "createdAt": "2026-11-07T20:45:24.586Z",
+    "status": "New"
+  },
+  {
+    "id": "enq_sample_2",
+    "name": "Anita Barman",
+    "business": "Assam Hotel & Resorts",
+    "email": "anita.b@assamresorts.com",
+    "phone": "+91 98540 12345",
+    "enquiryType": "samples",
+    "product": "royal-plus-tissue-paper",
+    "quantity": "Sample box",
+    "message": "Requesting sample box for custom logo printed tissue paper for hotel banquet tables.",
+    "createdAt": "2026-11-08T20:45:24.587Z",
+    "status": "In Progress"
+  }
+]

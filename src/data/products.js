@@ -1,0 +1,181 @@
+// Single source of truth for the Nirvana Impex product catalogue.
+// Real verified products and specifications from Nirvana Impex.
+
+export const categories = [
+  {
+    id: "tissue-paper",
+    name: "Tissue paper",
+    blurb: "Commercial tissue papers, napkins, and custom logo printed tissue products.",
+  },
+  {
+    id: "biohazard-bags",
+    name: "Biohazard & waste bags",
+    blurb: "Biomedical waste collection, biohazard bags, and biodegradable garbage liners.",
+  },
+  {
+    id: "toilet-rolls",
+    name: "Toilet rolls",
+    blurb: "Standard and bulk value pack toilet tissue rolls for business and institutional use.",
+  },
+  {
+    id: "paper-pouch",
+    name: "Paper pouches",
+    blurb: "Brown kraft paper grocery bags and retail packaging pouches.",
+  },
+];
+
+export const products = [
+  // ── Tissue Paper ──
+  {
+    id: "tissue-paper-1",
+    name: "Royal Plus Tissue Paper",
+    category: "tissue-paper",
+    short: "High-quality, absorbent white tissue paper designed for hospitality, corporate offices, and everyday commercial use.",
+    image: "/images/products/royal-plus-tissue-paper.jpg",
+    imageAlt: "Royal Plus Tissue Paper",
+    customisable: false,
+    featured: true,
+    published: true,
+  },
+  {
+    id: "tissue-paper-2",
+    name: "Royal Plus Ultra Soft Tissue",
+    category: "tissue-paper",
+    short: "Extra-soft, premium multi-ply tissue paper offering superior absorbency and comfort for commercial restrooms and hotel suites.",
+    image: "/images/products/royal-plus-ultra-soft-tissue.jpg",
+    imageAlt: "Royal Plus Ultra Soft Tissue",
+    customisable: false,
+    featured: false,
+    published: true,
+  },
+  {
+    id: "tissue-paper-3",
+    name: "Sunrise Tissue Paper",
+    category: "tissue-paper",
+    short: "Economical and durable commercial tissue paper packs suited for high-traffic facilities, catering, and institutional use.",
+    image: "/images/products/sunrise-tissue-paper.jpg",
+    imageAlt: "Sunrise Tissue Paper",
+    customisable: false,
+    featured: false,
+    published: true,
+  },
+  {
+    id: "tissue-paper-4",
+    name: "Royal Plus Paper Napkin",
+    category: "tissue-paper",
+    short: "Soft, highly absorbent disposable table napkins ideal for restaurants, food courts, cafeterias, and catering events.",
+    image: "/images/products/royal-plus-paper-napkin.jpg",
+    imageAlt: "Royal Plus Paper Napkin",
+    customisable: false,
+    featured: false,
+    published: true,
+  },
+  {
+    id: "tissue-paper-5",
+    name: "Custom Logo Printed Tissue Paper",
+    category: "tissue-paper",
+    short: "Custom-printed commercial tissue paper tailored with your business logo, custom branding, and artwork for premium packaging presentation.",
+    image: "/images/products/custom-logo-printed-tissue.jpg",
+    imageAlt: "Custom Logo Printed Tissue Paper",
+    customisable: true,
+    featured: true,
+    published: true,
+  },
+
+  // ── Biohazard & Waste Bags ──
+  {
+    id: "biohazard-bags-1",
+    name: "Blue Bio Hazard Non-Chlorinated Bag",
+    category: "biohazard-bags",
+    short: "Non-chlorinated biohazard containment bag for safe biomedical waste collection in hospitals, pathology labs, and clinical centers.",
+    image: "/images/products/blue-biohazard-bag.jpg",
+    imageAlt: "Blue Bio Hazard Non Chlorinated Bag",
+    customisable: false,
+    featured: true,
+    published: true,
+  },
+  {
+    id: "biohazard-bags-2",
+    name: "Yellow Biodegradable Biohazard Bag (19×21)",
+    category: "biohazard-bags",
+    short: "High-grade yellow biohazard bag for infectious clinical waste disposal, compliant with biomedical waste management standards.",
+    image: "/images/products/yellow-biohazard-bag.jpg",
+    imageAlt: "Yellow Biodegradable Biohazard Bag",
+    customisable: false,
+    featured: false,
+    published: true,
+  },
+  {
+    id: "biohazard-bags-3",
+    name: "Red Biodegradable Garbage Bag (19×21)",
+    category: "biohazard-bags",
+    short: "Puncture-resistant red biomedical waste liner designed for contaminated recyclable healthcare plastics and clinical tubing.",
+    image: "/images/products/red-biodegradable-bag-19x21.jpg",
+    imageAlt: "Red Biodegradable Garbage Bag (19x21)",
+    customisable: false,
+    featured: false,
+    published: true,
+  },
+  {
+    id: "biohazard-bags-4",
+    name: "Red Biodegradable Garbage Bags (30×40)",
+    category: "biohazard-bags",
+    short: "Heavy-duty 30×40 red biomedical waste liner engineered for high-volume hospital wards, surgical suites, and pathology labs.",
+    image: "/images/products/red-biodegradable-bag-30x40.jpg",
+    imageAlt: "Red Biodegradable Garbage Bags 30x40",
+    customisable: false,
+    featured: false,
+    published: true,
+  },
+  {
+    id: "biohazard-bags-5",
+    name: "Biodegradable Garbage Bag 19×21 (Green)",
+    category: "biohazard-bags",
+    short: "Eco-friendly green biodegradable waste bag designed for segregated wet waste, compostable collection, and facility sanitation.",
+    image: "/images/products/green-biodegradable-bag.jpg",
+    imageAlt: "Biodegradable Garbage Bag Green",
+    customisable: false,
+    featured: false,
+    published: true,
+  },
+
+  // ── Toilet Paper Rolls ──
+  {
+    id: "toilet-rolls-1",
+    name: "Royal Plus Toilet Paper Roll",
+    category: "toilet-rolls",
+    short: "Soft, durable 2-ply commercial bath tissue roll engineered for optimal hygiene and comfort in commercial and office restrooms.",
+    image: "/images/products/royal-plus-toilet-roll.jpg",
+    imageAlt: "Royal Plus Toilet Paper Roll",
+    customisable: false,
+    featured: true,
+    published: true,
+  },
+  {
+    id: "toilet-rolls-2",
+    name: "Royal Plus 10-In-1 Value Pack Toilet Tissue Roll",
+    category: "toilet-rolls",
+    short: "Bulk economic 10-roll value pack of quality bath tissue rolls for hotels, guesthouses, corporate offices, and institutions.",
+    image: "/images/products/royal-plus-toilet-roll-10in1.jpg",
+    imageAlt: "Royal Plus 10 in 1 Value Pack Toilet Tissue Roll",
+    customisable: false,
+    featured: false,
+    published: true,
+  },
+
+  // ── Paper Pouch ──
+  {
+    id: "paper-pouch-1",
+    name: "Brown Kraft Paper Grocery Bag",
+    category: "paper-pouch",
+    short: "Sturdy, eco-friendly food-grade brown kraft paper packaging bag with block bottom for retail, dry goods, groceries, and takeout.",
+    image: "/images/products/brown-kraft-paper-pouch.jpg",
+    imageAlt: "Brown Kraft Paper Grocery Bag",
+    customisable: false,
+    featured: true,
+    published: true,
+  },
+];
+
+export const categoryName = (id) => categories.find((c) => c.id === id)?.name ?? id;
+export const countIn = (id) => products.filter((p) => p.category === id && p.published).length;
