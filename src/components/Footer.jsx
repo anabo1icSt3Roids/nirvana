@@ -54,7 +54,7 @@ export default function Footer() {
               Hockey Stadium Rd, opp. LP School,<br />
               Lalmati, Guwahati, Assam 781040<br />
               Email: <a href="mailto:nirvanaimpex11@gmail.com" style={{ color: "rgba(255,255,255,.75)" }}>nirvanaimpex11@gmail.com</a><br />
-              WhatsApp: <a href="https://wa.me/917903221659" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,.75)" }}>+91 79032 21659</a>
+              <a href="https://wa.me/917903221659" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,.75)" }}>WhatsApp: +91 79032 21659</a>
             </p>
           </div>
         </div>

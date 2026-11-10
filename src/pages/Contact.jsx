@@ -255,7 +255,24 @@ export default function Contact() {
               <p style={{ fontSize: ".875rem", color: "var(--mid)", marginBottom: "1rem" }}>
                 For product quotes with specific quantities or custom printing artwork requirements, you can also use our unified enquiry system.
               </p>
-              <div style={{ marginTop: "1rem" }}>
+              <div style={{ marginTop: "1rem", display: "flex", flexDirection: "column", gap: ".65rem" }}>
+                <a
+                  href="https://wa.me/917903221659"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn--outline"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: ".5rem",
+                    width: "100%",
+                    color: "#128C7E",
+                    borderColor: "#25D366"
+                  }}
+                >
+                  <span aria-hidden="true">💬</span> Quick WhatsApp Chat
+                </a>
                 <Link to="/enquiry" className="btn btn--outline" style={{ display: "inline-block", width: "100%", textAlign: "center" }}>
                   Product Enquiry Portal
                 </Link>
