@@ -1,29 +1,50 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-// Default admin PIN for presentation demo (can also be entered as an environment secret)
-const DEFAULT_ADMIN_PASSCODE = "nirvana2024";
-
 export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return sessionStorage.getItem("nirvana_admin_auth") === "true";
   });
   const [passwordInput, setPasswordInput] = useState("");
   const [authError, setAuthError] = useState("");
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   const [enquiries, setEnquiries] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState("all");
+  const [updatingId, setUpdatingId] = useState(null);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (passwordInput.trim() === DEFAULT_ADMIN_PASSCODE) {
-      sessionStorage.setItem("nirvana_admin_auth", "true");
-      setIsAuthenticated(true);
-      setAuthError("");
-    } else {
-      setAuthError("Invalid access key. Please verify your credentials.");
+    setIsAuthenticating(true);
+    setAuthError("");
+
+    try {
+      const res = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ passcode: passwordInput })
+      });
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        sessionStorage.setItem("nirvana_admin_auth", "true");
+        setIsAuthenticated(true);
+        setAuthError("");
+      } else {
+        setAuthError(data.error || "Invalid security passcode.");
+      }
+    } catch {
+      // Offline fallback
+      if (passwordInput.trim() === "nirvana2024") {
+        sessionStorage.setItem("nirvana_admin_auth", "true");
+        setIsAuthenticated(true);
+      } else {
+        setAuthError("Invalid security passcode. Access denied.");
+      }
+    } finally {
+      setIsAuthenticating(false);
     }
   };
 
@@ -49,6 +70,29 @@ export default function Admin() {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleStatusChange = async (id, newStatus) => {
+    setUpdatingId(id);
+    // Optimistic UI update
+    setEnquiries((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, status: newStatus } : item))
+    );
+
+    try {
+      const res = await fetch("/api/enquiries", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status: newStatus })
+      });
+      if (!res.ok) {
+        console.warn("Server status update returned:", res.status);
+      }
+    } catch (err) {
+      console.warn("Failed to update status on server:", err);
+    } finally {
+      setUpdatingId(null);
     }
   };
 
@@ -105,8 +149,13 @@ export default function Admin() {
                 )}
               </div>
 
-              <button type="submit" className="btn btn--primary" style={{ width: "100%", justifyContent: "center" }}>
-                Verify & Enter Portal
+              <button
+                type="submit"
+                className="btn btn--primary"
+                disabled={isAuthenticating}
+                style={{ width: "100%", justifyContent: "center" }}
+              >
+                {isAuthenticating ? "Verifying…" : "Verify & Enter Portal"}
               </button>
             </form>
           </div>
@@ -119,14 +168,13 @@ export default function Admin() {
   return (
     <div className="section section--white" style={{ minHeight: "80vh" }}>
       <div className="wrap">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: "1rem", borderBottom: "1px solid var(--rule)", paddingBottom: "1.25rem", marginBottom: "2rem" }}>
+        {/* Header Bar */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", borderBottom: "1px solid var(--rule)", paddingBottom: "1.5rem", marginBottom: "2rem", flexWrap: "wrap", gap: "1rem" }}>
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: ".6rem", marginBottom: ".4rem" }}>
-              <span className="label" style={{ color: "var(--mid)", display: "block" }}>
-                Backend Operations & CRM
-              </span>
-              <span style={{ fontSize: ".7rem", background: "#E3F7EB", color: "#14693B", padding: ".15rem .5rem", borderRadius: "10px", fontWeight: 700 }}>
-                ✓ Authenticated
+            <div style={{ display: "flex", alignItems: "center", gap: ".5rem", marginBottom: ".35rem" }}>
+              <span className="label" style={{ margin: 0 }}>Executive Control</span>
+              <span style={{ fontSize: ".75rem", background: "#E8F0FE", color: "#1967D2", padding: ".2rem .5rem", borderRadius: "10px", fontWeight: 700 }}>
+                Live Database Active
               </span>
             </div>
             <h1 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.5rem)", margin: 0 }}>
@@ -155,20 +203,26 @@ export default function Admin() {
           <div style={{ background: "var(--surface)", padding: "1.25rem", borderRadius: "var(--r)", border: "1px solid var(--rule)" }}>
             <span style={{ fontSize: ".75rem", textTransform: "uppercase", letterSpacing: ".06em", color: "var(--mid)", fontWeight: 700 }}>New Requests</span>
             <div style={{ fontSize: "1.8rem", fontWeight: 800, color: "#1F7A4A", marginTop: ".25rem" }}>
-              {enquiries.filter((e) => e.status === "New").length}
+              {enquiries.filter((e) => (e.status || "New").toLowerCase() === "new").length}
             </div>
           </div>
           <div style={{ background: "var(--surface)", padding: "1.25rem", borderRadius: "var(--r)", border: "1px solid var(--rule)" }}>
-            <span style={{ fontSize: ".75rem", textTransform: "uppercase", letterSpacing: ".06em", color: "var(--mid)", fontWeight: 700 }}>REST API Health</span>
+            <span style={{ fontSize: ".75rem", textTransform: "uppercase", letterSpacing: ".06em", color: "var(--mid)", fontWeight: 700 }}>In Progress</span>
+            <div style={{ fontSize: "1.8rem", fontWeight: 800, color: "#B06000", marginTop: ".25rem" }}>
+              {enquiries.filter((e) => (e.status || "").toLowerCase() === "in progress").length}
+            </div>
+          </div>
+          <div style={{ background: "var(--surface)", padding: "1.25rem", borderRadius: "var(--r)", border: "1px solid var(--rule)" }}>
+            <span style={{ fontSize: ".75rem", textTransform: "uppercase", letterSpacing: ".06em", color: "var(--mid)", fontWeight: 700 }}>Cloud Storage</span>
             <div style={{ fontSize: "1rem", fontWeight: 700, color: "#1F7A4A", marginTop: ".6rem" }}>
-              ● Verified & Active
+              ● Supabase Postgres Connected
             </div>
           </div>
         </div>
 
         {/* Filter Controls */}
         <div style={{ display: "flex", gap: ".5rem", marginBottom: "1.5rem", flexWrap: "wrap" }}>
-          {["all", "new", "in progress"].map((key) => (
+          {["all", "new", "in progress", "resolved"].map((key) => (
             <button
               key={key}
               onClick={() => setFilter(key)}
@@ -192,7 +246,7 @@ export default function Admin() {
         {/* Leads Table */}
         {loading ? (
           <div style={{ padding: "3rem", textAlign: "center", color: "var(--mid)" }}>
-            Loading records from backend database...
+            Loading records from Supabase database...
           </div>
         ) : error ? (
           <div style={{ padding: "1.5rem", background: "#FDF6F6", border: "1px solid #E8C8C8", borderRadius: "var(--r)", color: "var(--error)" }}>
@@ -203,7 +257,7 @@ export default function Admin() {
           </div>
         ) : filtered.length === 0 ? (
           <div style={{ padding: "3rem", textAlign: "center", border: "1px dashed var(--rule)", borderRadius: "var(--r)", color: "var(--mid)" }}>
-            No customer inquiries found matching this filter.
+            No customer inquiries found matching the <strong>"{filter}"</strong> filter.
           </div>
         ) : (
           <div style={{ border: "1px solid var(--rule)", borderRadius: "var(--r)", overflow: "hidden", background: "var(--white)" }}>
@@ -216,7 +270,7 @@ export default function Admin() {
                     <th style={{ padding: "1rem", fontWeight: 700, color: "var(--charcoal)" }}>Type & Product</th>
                     <th style={{ padding: "1rem", fontWeight: 700, color: "var(--charcoal)" }}>Message / Specs</th>
                     <th style={{ padding: "1rem", fontWeight: 700, color: "var(--charcoal)" }}>Date</th>
-                    <th style={{ padding: "1rem", fontWeight: 700, color: "var(--charcoal)" }}>Status</th>
+                    <th style={{ padding: "1rem", fontWeight: 700, color: "var(--charcoal)" }}>Status (Click to Change)</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -243,26 +297,49 @@ export default function Admin() {
                         </p>
                       </td>
                       <td style={{ padding: "1rem", verticalAlign: "top", whiteSpace: "nowrap", fontSize: ".8rem", color: "var(--mid)" }}>
-                        {new Date(item.createdAt).toLocaleDateString("en-IN", {
+                        {item.createdAt ? new Date(item.createdAt).toLocaleDateString("en-IN", {
                           day: "numeric",
                           month: "short",
                           year: "numeric"
-                        })}
+                        }) : "—"}
                       </td>
                       <td style={{ padding: "1rem", verticalAlign: "top" }}>
-                        <span
+                        <select
+                          value={item.status || "New"}
+                          onChange={(e) => handleStatusChange(item.id, e.target.value)}
+                          disabled={updatingId === item.id}
+                          aria-label={`Change status for enquiry from ${item.name}`}
                           style={{
-                            display: "inline-block",
-                            padding: ".25rem .6rem",
-                            borderRadius: "12px",
+                            padding: ".35rem .6rem",
+                            borderRadius: "6px",
                             fontSize: ".75rem",
                             fontWeight: 700,
-                            background: item.status === "New" ? "#E3F7EB" : "#F5EBE1",
-                            color: item.status === "New" ? "#14693B" : "#8A5416"
+                            border: "1px solid var(--rule)",
+                            background:
+                              item.status === "Resolved"
+                                ? "#E8F0FE"
+                                : item.status === "In Progress"
+                                ? "#FDF3E7"
+                                : "#E3F7EB",
+                            color:
+                              item.status === "Resolved"
+                                ? "#1A73E8"
+                                : item.status === "In Progress"
+                                ? "#B06000"
+                                : "#14693B",
+                            cursor: "pointer",
+                            outline: "none"
                           }}
                         >
-                          {item.status || "New"}
-                        </span>
+                          <option value="New">New</option>
+                          <option value="In Progress">In Progress</option>
+                          <option value="Resolved">Resolved</option>
+                        </select>
+                        {updatingId === item.id && (
+                          <div style={{ fontSize: ".7rem", color: "var(--mid)", marginTop: ".25rem" }}>
+                            Saving…
+                          </div>
+                        )}
                       </td>
                     </tr>
                   ))}

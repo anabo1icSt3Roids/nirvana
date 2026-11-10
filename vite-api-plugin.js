@@ -2,6 +2,7 @@
 import url from "url";
 import enquiriesHandler from "./api/enquiries.js";
 import productsHandler from "./api/products.js";
+import authHandler from "./api/auth.js";
 
 export function localApiPlugin() {
   return {
@@ -11,9 +12,9 @@ export function localApiPlugin() {
         const parsedUrl = url.parse(req.url, true);
         const pathname = parsedUrl.pathname;
 
-        if (pathname === "/api/enquiries" || pathname === "/api/products") {
-          // Parse request body for POST requests
-          if (req.method === "POST" || req.method === "PUT") {
+        if (pathname === "/api/enquiries" || pathname === "/api/products" || pathname === "/api/auth") {
+          // Parse request body for POST/PUT/PATCH requests
+          if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
             const buffers = [];
             for await (const chunk of req) {
               buffers.push(chunk);
@@ -39,11 +40,17 @@ export function localApiPlugin() {
             return res;
           };
 
+          if (pathname === "/api/auth") {
+            await authHandler(req, res);
+            return;
+          }
           if (pathname === "/api/enquiries") {
-            return enquiriesHandler(req, res);
+            await enquiriesHandler(req, res);
+            return;
           }
           if (pathname === "/api/products") {
-            return productsHandler(req, res);
+            await productsHandler(req, res);
+            return;
           }
         }
         next();

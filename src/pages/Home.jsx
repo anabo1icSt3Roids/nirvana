@@ -15,11 +15,10 @@ export default function Home() {
         <div className="wrap">
           <div className="hero-inner hero-inner--centered">
             <div className="hero-text hero-text--centered">
-              <span className="label">Paper products supplier</span>
-              <h1>Paper products for businesses that depend on quality.</h1>
+              <span className="label">HYGIENE & PACKAGING PRODUCTS SUPPLIER</span>
+              <h1>Reliable hygiene and packaging supplies for businesses.</h1>
               <p className="lead">
-                Tissue paper, biohazard bags, toilet rolls and paper pouches —
-                sourced reliably and supplied to businesses.
+                From tissue paper and paper cups to packaging and hygiene essentials, we supply businesses with products they can depend on.
               </p>
               <div className="btn-row btn-row--centered">
                 <Link to="/products" className="btn btn--primary">Explore products</Link>

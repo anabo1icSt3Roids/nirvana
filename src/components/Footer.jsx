@@ -31,6 +31,7 @@ export default function Footer() {
               <Link to="/about">About Us</Link>
               <Link to="/products">Products</Link>
               <Link to="/enquiry">Enquire</Link>
+              <Link to="/contact">Contact</Link>
             </nav>
           </div>
 
@@ -61,7 +62,7 @@ export default function Footer() {
         <div className="footer-base">
           <p>© {year} Nirvana Impex. All rights reserved.</p>
           <p>
-            Paper products for businesses. · <Link to="/admin" style={{ color: "rgba(255,255,255,.45)", textDecoration: "underline" }}>Admin Portal</Link>
+            Hygiene & Packaging Products Supplier · <Link to="/admin" style={{ color: "rgba(255,255,255,.45)", textDecoration: "underline" }}>Admin Portal</Link>
           </p>
         </div>
       </div>

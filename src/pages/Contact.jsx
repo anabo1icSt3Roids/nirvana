@@ -147,7 +147,7 @@ export default function Contact() {
                       value={form.name}
                       onChange={(e) => set("name", e.target.value)}
                       autoComplete="name"
-                      placeholder="Jane Smith"
+                      placeholder="Altman Sam"
                       aria-required="true"
                       aria-invalid={errors.name ? "true" : "false"}
                       aria-describedby={errors.name ? "c-name-err" : undefined}
@@ -168,7 +168,7 @@ export default function Contact() {
                       value={form.company}
                       onChange={(e) => set("company", e.target.value)}
                       autoComplete="organization"
-                      placeholder="Acme Ltd"
+                      placeholder="Palantir"
                       aria-invalid="false"
                     />
                   </div>
@@ -186,7 +186,7 @@ export default function Contact() {
                       value={form.email}
                       onChange={(e) => set("email", e.target.value)}
                       autoComplete="email"
-                      placeholder="jane@company.com"
+                      placeholder="gogoi@ghanakanta.enquire"
                       aria-required="true"
                       aria-invalid={errors.email ? "true" : "false"}
                       aria-describedby={errors.email ? "c-email-err" : undefined}
@@ -223,7 +223,7 @@ export default function Contact() {
                     rows={5}
                     value={form.message}
                     onChange={(e) => set("message", e.target.value)}
-                    placeholder="How can we help you?"
+                    placeholder="Tell Us What You Need"
                     aria-required="true"
                     aria-invalid={errors.message ? "true" : "false"}
                     aria-describedby={errors.message ? "c-msg-err" : undefined}

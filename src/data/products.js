@@ -129,11 +129,11 @@ export const products = [
   },
   {
     id: "biohazard-bags-5",
-    name: "Biodegradable Garbage Bag 19×21 (Green)",
+    name: "Green Biodegradable Garbage Bag (19×21)",
     category: "biohazard-bags",
     short: "Eco-friendly green biodegradable waste bag designed for segregated wet waste, compostable collection, and facility sanitation.",
     image: "/images/products/green-biodegradable-bag.jpg",
-    imageAlt: "Biodegradable Garbage Bag Green",
+    imageAlt: "Green Biodegradable Garbage Bag (19x21)",
     customisable: false,
     featured: false,
     published: true,

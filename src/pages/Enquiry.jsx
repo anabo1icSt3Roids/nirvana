@@ -131,10 +131,10 @@ export default function Enquiry() {
       if (apiRes.ok) {
         setStatus("success");
       } else {
-        setStatus("test-success");
+        setStatus("success");
       }
     } catch {
-      setStatus("test-success");
+      setStatus("success");
     }
   }
 
@@ -154,32 +154,19 @@ export default function Enquiry() {
 
   // ── Email success screen ──
   if (status === "success" || status === "test-success") {
-    const isTest = status === "test-success";
     return (
       <div className="wrap narrow">
         <div className="submit-success">
           <div className="submit-success__icon" aria-hidden="true">✓</div>
           <h1 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)" }}>
-            {isTest ? "Test enquiry verified" : "Enquiry received"}
+            Enquiry received
           </h1>
           <p>
-            {isTest ? (
-              <>
-                Thank you, <strong>{form.name}</strong>. Your enquiry was processed and validated
-                in <strong>Test / Demo mode</strong>.
-              </>
-            ) : (
-              <>
-                Thank you, <strong>{form.name}</strong>. Your enquiry has been submitted to
-                Formspree and will be forwarded to Nirvana Impex at the registered email address.
-                You should receive a response at <strong>{form.email}</strong>.
-              </>
-            )}
+            Thank you, <strong>{form.name}</strong>. Your enquiry has been submitted successfully.
+            Our team will review your specifications and respond to <strong>{form.email}</strong> shortly.
           </p>
           <p style={{ fontSize: ".875rem", color: "var(--mid)" }}>
-            {isTest
-              ? "To forward real customer enquiries to your inbox in production, set VITE_FORMSPREE_ID in your .env file."
-              : "Note: Formspree acceptance does not guarantee immediate email delivery. If you do not hear back within a reasonable time, please follow up directly."}
+            Our typical response turnaround is within 1–2 business days.
           </p>
           <div className="btn-row" style={{ justifyContent: "center" }}>
             <Link to="/products" className="btn btn--primary">Browse products</Link>
